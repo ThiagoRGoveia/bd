@@ -15,5 +15,5 @@ UPDATE disciplina SET nota_media = media WHERE Sigla = NEW.Sigla;
 END;
 $calculate_media$ LANGUAGE plpgsql;
 CREATE TRIGGER calculate_media
-BEFORE INSERT OR UPDATE OR DELETE ON Matricula
+AFTER INSERT OR UPDATE OR DELETE ON Matricula
 FOR EACH ROW EXECUTE PROCEDURE calculate_media();
