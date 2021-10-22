@@ -9,8 +9,7 @@ CREATE OR REPLACE FUNCTION check_titulo_professor() RETURNS trigger AS $check_ti
 DECLARE
 titulo_prof INTEGER;
 BEGIN
-SELECT Titulação INTO titulo_prof WHERE NFunc = NEW.NFunc
-FROM Matricula;
+SELECT Titulação INTO titulo_prof WHERE NFunc = NEW.NFunc FROM Matricula;
 IF NEW.Titulação = 'Titular' THEN RETURN NEW;
 IF NEW.Titulação = 'Livre-docente' AND Titulação != 'Titular' THEN RETURN NEW;
 IF NEW.Titulação = 'Doutor' AND Titulação != 'Livre-docente' AND Titulação != 'Titular' THEN RETURN NEW;
