@@ -12,6 +12,7 @@ media INTEGER;
 BEGIN
 SELECT AVG(Nota) INTO media WHERE Sigla = NEW.Sigla GROUP BY Nota FROM Matricula;
 UPDATE disciplina SET nota_media = media WHERE Sigla = NEW.Sigla;
+RETURN NEW;
 END;
 $calculate_media$ LANGUAGE plpgsql;
 CREATE TRIGGER calculate_media
