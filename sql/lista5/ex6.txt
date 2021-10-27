@@ -1,0 +1,8 @@
+SELECIONA todas_as_sessoes
+INICIA_LOOP sessao EM todas_as_sessoes
+    sala = BUSCA sala ONDE sala.nr_sala = sessao.nr_sala E sala.id_cinema = sessao.id_cinema
+    SE sala = NADA
+        LANÇA ERRO "Uma sessao deve possuir uma sala no mesmo cinema em que ela ocorre"
+    FIM SE
+TERMINA_LOOP
+FIM
