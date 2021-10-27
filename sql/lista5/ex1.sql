@@ -122,7 +122,6 @@ SELECT COUNT(*) INTO  quanti_matriculas FROM Matricula WHERE Aluno = NEW.Aluno ;
 IF quanti_matriculas >= 20 THEN
 RAISE EXCEPTION 'Nao pode cadastrar mais disciplinas para esse aluno';
 END IF;
-RAISE NOTICE '%', quanti_matriculas;
 RETURN NEW;
 END;
 $check_matricula$ LANGUAGE plpgsql;
