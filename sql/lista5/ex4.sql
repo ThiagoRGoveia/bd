@@ -112,19 +112,17 @@ INSERT INTO Matricula VALUES('SM300', 2, 5, 2010, 9.1, 50);
 
 -- ex4
 
-DROP TRIGGER calculate_age ON ALUNO;
+-- DROP TRIGGER calculate_age ON ALUNO;
 
 CREATE OR REPLACE FUNCTION calculate_age() RETURNS trigger AS $calculate_age$
 DECLARE
-today INTEGER;
 BEGIN
-today := EXTRACT(YEAR FROM CURRENT_DATE);
-NEW.Idade := today - EXTRACT(year FROM age(NEW.DataNasc));
+NEW.Idade := EXTRACT(year FROM age(NEW.datanasc));
 RETURN NEW;
 END;
 $calculate_age$ LANGUAGE plpgsql;
 CREATE TRIGGER calculate_age
-AFTER UPDATE OR INSERT ON ALUNO
+BEFORE UPDATE OR INSERT ON ALUNO
 FOR EACH ROW EXECUTE PROCEDURE calculate_age();
 
 -- fim do ex4
