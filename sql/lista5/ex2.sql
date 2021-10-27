@@ -19,7 +19,7 @@ CREATE TABLE Professor(
  CONSTRAINT prof_pk PRIMARY KEY(NFunc),
  CONSTRAINT prof_un UNIQUE(Nome),
  CONSTRAINT prof_idade_ck CHECK(Idade > 18),
- CONSTRAINT prof_tit_ck CHECK(Titulacao IN ('Mestrado','Doutorado'))
+ CONSTRAINT prof_tit_ck CHECK(Titulacao IN ('Mestrado','Doutorado, Livre-docente, Titular'))
 );
 
 CREATE TABLE Disciplina(
@@ -112,20 +112,23 @@ INSERT INTO Matricula VALUES('SM300', 2, 5, 2010, 9.1, 50);
 
 --ex2
 
-DROP TRIGGER check_titulo_professor ON Matricula;
-
+-- DROP TRIGGER check_titulo_professor ON Professor;
 CREATE OR REPLACE FUNCTION check_titulo_professor() RETURNS trigger AS $check_titulo_professor$
 DECLARE
-titulo_prof INTEGER;
+titulo_prof VARCHAR(100);
 BEGIN
-SELECT Titulação INTO titulo_prof WHERE NFunc = NEW.NFunc FROM Matricula;
-IF NEW.Titulação = 'Titular' THEN RETURN NEW;
-IF NEW.Titulação = 'Livre-docente' AND Titulação != 'Titular' THEN RETURN NEW;
-IF NEW.Titulação = 'Doutor' AND Titulação != 'Livre-docente' AND Titulação != 'Titular' THEN RETURN NEW;
--- Mestre não pode ser um valor inserido no UPDATE pois viola a regra de negócio
+SELECT Titulacao INTO titulo_prof FROM Professor WHERE NFunc = NEW.NFunc;
+IF
+	NEW.Titulacao = 'Titular' THEN RETURN NEW;
 END IF;
+IF
+	NEW.Titulacao = 'Livre-docente' AND titulo_prof != 'Titular' THEN RETURN NEW;
+END IF;
+IF NEW.Titulacao = 'Doutor' AND titulo_prof != 'Livre-docente' AND titulo_prof != 'Titular' THEN
+	RETURN NEW;
+END IF;
+-- Mestre não pode ser um valor inserido no UPDATE pois viola a regra de negócio
 RAISE EXCEPTION 'Nao pode regredir titulação';
-
 END;
 $check_titulo_professor$ LANGUAGE plpgsql;
 CREATE TRIGGER check_titulo_professor
