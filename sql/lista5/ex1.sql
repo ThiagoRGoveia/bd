@@ -112,20 +112,21 @@ INSERT INTO Matricula VALUES('SM300', 2, 5, 2010, 9.1, 50);
 
 -- ex1
 
-DROP TRIGGER check_matricula ON Matricula;
+-- DROP TRIGGER check_matricula ON Matricula;
 
 CREATE OR REPLACE FUNCTION check_matricula() RETURNS trigger AS $check_matricula$
 DECLARE
 quanti_matriculas INTEGER;
 BEGIN
-SELECT COUNT(*) INTO quanti_matriculas WHERE Aluno = NEW.Aluno FROM Matricula;
-IF quanti_matriculas > 20 THEN
+SELECT COUNT(*) INTO  quanti_matriculas FROM Matricula WHERE Aluno = NEW.Aluno ;
+IF quanti_matriculas >= 20 THEN
 RAISE EXCEPTION 'Nao pode cadastrar mais disciplinas para esse aluno';
 END IF;
+RAISE NOTICE '%', quanti_matriculas;
 RETURN NEW;
 END;
 $check_matricula$ LANGUAGE plpgsql;
 CREATE TRIGGER check_matricula
 BEFORE INSERT ON Matricula
-EXECUTE PROCEDURE check_matricula();
+FOR EACH ROW EXECUTE PROCEDURE check_matricula();
 -- fim do  ex1
