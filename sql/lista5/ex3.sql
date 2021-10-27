@@ -111,7 +111,7 @@ INSERT INTO Matricula VALUES('SM300', 2, 4, 2010, 5.8, 100);
 INSERT INTO Matricula VALUES('SM300', 2, 5, 2010, 9.1, 50);
 
 -- ex3
-ALTER TABLE disciplina ADD COLUMN nota_media float;
+-- ALTER TABLE disciplina ADD COLUMN nota_media float;
 
 DROP TRIGGER calculate_media ON Matricula;
 
@@ -119,7 +119,7 @@ CREATE OR REPLACE FUNCTION calculate_media() RETURNS trigger AS $calculate_media
 DECLARE
 media INTEGER;
 BEGIN
-SELECT AVG(Nota) INTO media WHERE Sigla = NEW.Sigla GROUP BY Nota FROM Matricula;
+SELECT AVG(Nota) INTO media FROM Matricula WHERE Sigla = NEW.Sigla GROUP BY Nota;
 UPDATE disciplina SET nota_media = media WHERE Sigla = NEW.Sigla;
 RETURN NEW;
 END;

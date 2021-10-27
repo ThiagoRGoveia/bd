@@ -113,6 +113,9 @@ INSERT INTO Matricula VALUES('SM300', 2, 5, 2010, 9.1, 50);
 --ex2
 
 -- DROP TRIGGER check_titulo_professor ON Professor;
+-- ALTER TABLE Professor DROP CONSTRAINT prof_tit_ck;
+-- ALTER TABLE Professor ADD CONSTRAINT prof_tit_ck CHECK(Titulacao IN ('Mestrado','Doutorado', 'Livre-docente', 'Titular'));
+
 CREATE OR REPLACE FUNCTION check_titulo_professor() RETURNS trigger AS $check_titulo_professor$
 DECLARE
 titulo_prof VARCHAR(100);
