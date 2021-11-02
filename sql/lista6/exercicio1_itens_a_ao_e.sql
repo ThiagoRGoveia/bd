@@ -1,8 +1,3 @@
---select para aparecer todos os itens da tabela
-SELECT * FROM fornecedores f JOIN catalogo C
-    ON f.f_id = c.f_id JOIN
-    pecas p ON c.p_id = p.p_id
-
 --item a)
 /*Parte de álgebra relacional
     T1 <- condição(cor = 'vermelho')(pecas)

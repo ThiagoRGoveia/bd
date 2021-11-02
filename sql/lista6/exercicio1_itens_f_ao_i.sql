@@ -26,3 +26,16 @@ T4 <- listar(f_id, f_nome, p_nome, preco) (T3)
 */
 
 --item i
+/*not finished*/
+SELECT DISTINCT * FROM
+((SELECT p.p_id
+FROM fornecedores f JOIN catalogo c
+	ON f.f_id = c.f_id JOIN
+	pecas p ON c.p_id = p.p_id)
+	
+INTERSECT
+ 
+(SELECT DISTINCT p.p_id
+FROM fornecedores f JOIN catalogo c
+	ON f.f_id = c.f_id JOIN
+	pecas p ON c.p_id = p.p_id))
